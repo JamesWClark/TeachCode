@@ -1,0 +1,31 @@
+{
+  "name": "teachcode",
+  "version": "0.0.1",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "express": "^4.13.4",
+    "mongodb": "^2.1.18",
+    "socket.io": "^1.4.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "nodejs server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JamesWClark/TeachCode.git"
+  },
+  "keywords": [
+    "Teach",
+    "Code"
+  ],
+  "author": "J.W. Clark",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JamesWClark/TeachCode/issues"
+  },
+  "homepage": "https://github.com/JamesWClark/TeachCode#readme"
+}
