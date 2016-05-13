@@ -3,6 +3,8 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var bodyParser = require('body-parser');
+var exec = require('child_process').exec;
+
 
 var Mongo = require('mongodb').MongoClient;
 var assert = require('assert');
@@ -15,6 +17,30 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/static', express.static(__dirname + '/static'));
 app.use('/', express.static(__dirname + '/site'));
 
+
+exec('mongod --dbpath ~/data/mongo', function(error, stdout, stderr) {
+  if (error) {
+      console.log(error);
+  } else {
+      console.log('db start ok i think');
+  }
+  //process.stdout.write(stdout);
+  //process.stderr.write(stderr);
+});
+
+process.on( 'SIGINT', function() {
+  console.log( "\nGracefully shutting down from SIGINT (Ctrl-C)" );
+  exec('mongo admin --eval "db.shutdownServer()"', function(error, stdout, stderr) {
+      if(error) {
+          console.log(error);
+      } else {
+          console.log('db shutdown success i think');
+      }
+      //process.stdout.write(stdout);
+      //process.stderr.write(stderr);
+  });
+  process.exit( );
+});
 
 // http://stackoverflow.com/questions/4816099/chrome-sendrequest-error-typeerror-converting-circular-structure-to-json
 function simpleStringify (object){

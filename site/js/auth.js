@@ -21,20 +21,12 @@ var GoogleLogin = function() {
             };
             
             $.post('/onuserlogin', loginStamp).done(function(data) {
+                alert(data.status);
                 // should check 201 status? or something else?
             });
-            
-            $('#curr-user-cell').text(JSON.stringify(googleUser, undefined, 2));
-            $('#signed-in-cell').text(auth2.isSignedIn.get());
-            $('#user-id').text(googleUser.getId());
-            $('#user-scopes').text(googleUser.getGrantedScopes());
-            $('#auth-response').text(JSON.stringify(googleUser.getAuthResponse(), undefined, 2));    
+
         } else {
-            $('#curr-user-cell').text('--');
-            $('#signed-in-cell').text('--');
-            $('#user-id').text('--');
-            $('#user-scopes').text('--');
-            $('#auth-response').text('--');
+
         }
     };
     
