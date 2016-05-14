@@ -1,5 +1,14 @@
-#smile-container {
-  text-align: center; }
+.button {
+  background-color: #CEECF5;
+  border: solid #2E2EFE 1px;
+  border-radius: 7px;
+  padding: 7px; }
+
+.button:hover {
+  background-color: #A9D0F5; }
+
+#home-create-options {
+  width: 50%; }
 
 #smile-logo {
   width: 30%; }

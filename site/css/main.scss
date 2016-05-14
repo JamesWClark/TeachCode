@@ -1,0 +1,24 @@
+$PADDING : 7px;
+
+$LIGHT_BLUE: #CEECF5;
+$MEDIUM_BLUE: #A9D0F5;
+$DARK_BLUE: #2E2EFE;
+
+.button {
+  background-color: $LIGHT_BLUE;
+  border: solid $DARK_BLUE 1px;
+  border-radius: $PADDING;
+  padding: $PADDING;
+}
+
+.button:hover {
+  background-color: $MEDIUM_BLUE;
+}
+
+#home-create-options {
+  width: 50%;
+}
+
+#smile-logo {
+  width: 30%;
+}
