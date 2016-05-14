@@ -5,19 +5,20 @@
   <meta charset="utf-8">
   <meta name="google-signin-client_id" content="718093477288-n6fuuo8ddb37qicthmdi6gamlao5345r.apps.googleusercontent.com">
   <link href="https://rawgit.com/JamesWClark/RadCSS/master/rad.css" rel="stylesheet" />
-  <link href="/css/main.css" rel="stylesheet">
+  <link href="css/main.css" rel="stylesheet">
   <script>
     VIH_DisplayOnPage = "no";
   </script>
   <script src="http://scripts.hashemian.com/js/visitorIPHOST.js.php"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
-  <script src="/js/auth.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular.min.js"></script>
+  <script src="js/main.js"></script>
   <script src="https://apis.google.com/js/platform.js?onload=GoogleLogin" async defer></script>
-  <script src="/js/main.js"></script>
+  
 </head>
 
-<body>
+<body ng-app="tc" ng-controller="tcc">
 
   <div id="nav-container">
     <div id="signin" class="g-signin2"></div>
@@ -26,7 +27,7 @@
   </div>
 
   <div id="smile-container" class="flex center middle">
-    <img id="smile-logo" src="/img/smile.png">
+    <img id="smile-logo" src="img/smile.png">
   </div>
   
 </body>

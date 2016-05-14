@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var Mongo = require('mongodb').MongoClient;
 var assert = require('assert');
 
-var url = 'mongodb://localhost:27017/vals';
+var url = 'mongodb://localhost:27017/teachcode';
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -146,7 +146,7 @@ app.post('/onuserlogin', function(req, res) {
 
 
 
-http.listen(process.env.PORT || 1898, function() {
+http.listen(process.env.PORT || 80, function() {
     console.log('hosting from ' + __dirname);
     console.log('listening on 1898');
 });
