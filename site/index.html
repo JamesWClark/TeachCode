@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta name="google-signin-client_id" content="718093477288-n6fuuo8ddb37qicthmdi6gamlao5345r.apps.googleusercontent.com">
   <link href="https://rawgit.com/JamesWClark/RadCSS/master/rad.css" rel="stylesheet" />
+  <link href="/css/main.css" rel="stylesheet">
   <script>
     VIH_DisplayOnPage = "no";
   </script>
@@ -18,9 +19,15 @@
 
 <body>
 
-  <div id="signin" class="g-signin2"></div>
-  <button id="signout" onclick="gapi.auth2.getAuthInstance().signOut()">Signout</button>
-  <button id="disconnect" onclick="gapi.auth2.getAuthInstance().disconnect()">Disconnect</button>
+  <div id="nav-container">
+    <div id="signin" class="g-signin2"></div>
+    <button id="signout" onclick="gapi.auth2.getAuthInstance().signOut()">Signout</button>
+    <button id="disconnect" onclick="gapi.auth2.getAuthInstance().disconnect()">Disconnect</button>
+  </div>
+
+  <div id="smile-container" class="flex center middle">
+    <img id="smile-logo" src="/img/smile.png">
+  </div>
   
 </body>
 
