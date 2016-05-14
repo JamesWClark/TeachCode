@@ -1,39 +1,39 @@
 var app = angular.module('tc', []);
 
 app.controller('tcc', function($scope, $window) {
-// https://developers.google.com/identity/sign-in/web/sign-in
-// https://developers.google.com/identity/sign-in/web/listeners
-
 
     $window.GoogleLogin = function() {
 
         var auth2;
+        
         var userChanged = function(googleUser) {
-            console.log('userChanged = ' + googleUser);
-            var profile = googleUser.getBasicProfile();
-            var loginStamp = {
-                idToken     : googleUser.getAuthResponse().id_token,
-                fullName    : profile.getName(),
-                firstName   : profile.getGivenName(),
-                lastName    : profile.getFamilyName(),
-                photo       : profile.getImageUrl(),
-                email       : profile.getEmail(),
-                timestamp   : moment().format(),
-                ip          : VIH_HostIP
-            };
+            console.log('userChanged = ' + JSON.stringify(googleUser));
+            if(googleUser.El != null && googleUser.hg != null) {
+                var profile = googleUser.getBasicProfile();
+                var loginStamp = {
+                    idToken     : googleUser.getAuthResponse().id_token,
+                    fullName    : profile.getName(),
+                    firstName   : profile.getGivenName(),
+                    lastName    : profile.getFamilyName(),
+                    photo       : profile.getImageUrl(),
+                    email       : profile.getEmail(),
+                    timestamp   : moment().format(),
+                    ip          : VIH_HostIP
+                };
 
-            $.post('/onuserlogin', loginStamp, function(data, status, xhr) {
-                switch(xhr.status) {
-                    case 201:
-                        console.log('successful login record');
-                        break;
-                    default:
-                        console.log('default :( xhr.status = ' + xhr.status);
-                        break;
-                }
-            }).fail(function(xhr) {
-                console.log('fail = ' + JSON.stringify(xhr));
-            });
+                $.post('/onuserlogin', loginStamp, function(data, status, xhr) {
+                    switch(xhr.status) {
+                        case 201:
+                            console.log('successful login record');
+                            break;
+                        default:
+                            console.log('default :( xhr.status = ' + xhr.status);
+                            break;
+                    }
+                }).fail(function(xhr) {
+                    console.log('fail = ' + JSON.stringify(xhr));
+                });
+            }
         };
 
         var signinChanged = function(val) {
