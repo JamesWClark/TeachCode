@@ -1,8 +1,12 @@
+// interesting - look into this basic auth doc
+// http://blog.modulus.io/nodejs-and-express-basic-authentication
+
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var bodyParser = require('body-parser');
+var moment = require('moment');
 
 var Mongo = require('mongodb').MongoClient;
 var assert = require('assert');
@@ -15,7 +19,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/static', express.static(__dirname + '/static'));
 app.use('/', express.static(__dirname + '/site'));
 
+var superadmins = ['jwclark@rockhursths.edu'];
+var domains = ['rockhursths.edu','amdg.rockhursths.edu'];
 
+var tokenSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 // http://stackoverflow.com/questions/4816099/chrome-sendrequest-error-typeerror-converting-circular-structure-to-json
 function simpleStringify (object){
@@ -131,14 +138,36 @@ io.on('connection', function(socket) {
 });
 
 
+var generateJoinToken = function(length) {
+    var token = '';
+    for(var i = 0; i < length; i++) {
+        var random = Math.floor(Math.random() * tokenSet.length);
+        token += tokenSet[random];
+    }
+    return token;
+};
 
-app.post('/onuserlogin', function(req, res) {
+
+app.post('/signinchanged', function(req, res) {
     console.log(req.body.email + ' has logged in');
     Mongo.ops.insertJson('logins', req.body);
-    res.status(201).send('');
+    var options = {
+        createCourse : superadmins.indexOf(req.body.email) === -1 ? false : true,
+        joinCourse : domains.indexOf(req.body.domain) === -1 ? false : true
+    };
+    res.status(201).send(options);
 });
 
-
+app.post('/savecourse', function(req, res) {
+    var joinToken = generateJoinToken(10);
+    var course = req.body;
+    course.joinToken = joinToken;
+    course.timestamp = moment().format();
+    
+    console.log('creating a course with name = ' + req.body.name + ', and joinToken = ' + joinToken);
+    Mongo.ops.insertJson('courses', course);
+    res.status(201).send(joinToken);
+});
 
 
 

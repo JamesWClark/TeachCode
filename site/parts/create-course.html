@@ -1,0 +1,8 @@
+<form id="form-create-course">
+  <input id="i-course-name" placeholder="Course Name" ng-model="course.name" required>
+  <label for="i-course-start-date">Start Date: </label>
+  <input id="i-course-start-date" class="datepicker" ng-model="course.start" required>
+  <label for="i-course-end-date">End Date: </label>
+  <input id="i-course-end-date" class="datepicker" ng-model="course.end" required>
+  <button id="btn-course-create" ng-click="saveCourse()">Create</button>
+</form>

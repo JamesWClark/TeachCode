@@ -9,10 +9,15 @@ $DARK_BLUE: #2E2EFE;
   border: solid $DARK_BLUE 1px;
   border-radius: $PADDING;
   padding: $PADDING;
+  cursor: pointer;
 }
 
 .button:hover {
   background-color: $MEDIUM_BLUE;
+}
+
+.token {
+  font-family: courier;
 }
 
 #home-create-options {
@@ -21,4 +26,9 @@ $DARK_BLUE: #2E2EFE;
 
 #smile-logo {
   width: 30%;
+}
+
+#main {
+  box-sizing: border-box;
+  overflow: hidden;
 }

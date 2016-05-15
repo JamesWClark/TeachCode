@@ -2,15 +2,23 @@
   background-color: #CEECF5;
   border: solid #2E2EFE 1px;
   border-radius: 7px;
-  padding: 7px; }
+  padding: 7px;
+  cursor: pointer; }
 
 .button:hover {
   background-color: #A9D0F5; }
+
+.token {
+  font-family: courier; }
 
 #home-create-options {
   width: 50%; }
 
 #smile-logo {
   width: 30%; }
+
+#main {
+  box-sizing: border-box;
+  overflow: hidden; }
 
 /*# sourceMappingURL=main.css.map */
