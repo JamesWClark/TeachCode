@@ -10,82 +10,85 @@ app.controller('tcc', function($scope, $window, $http, $compile) {
     $scope.course = {};
     
     $scope.error = '';
-    
+  
     $window.GoogleLogin = function() {
-        
-        function userChanged(googleUser) {
-            console.log('userChanged = ' + JSON.stringify(googleUser));
-            if(googleUser.El != null && googleUser.hg != null) {
-                var profile = googleUser.getBasicProfile();
-                $scope.user.idToken   = googleUser.getAuthResponse().id_token;
-                $scope.user.fullName  = profile.getName();
-                $scope.user.firstName = profile.getGivenName();
-                $scope.user.lastName  = profile.getFamilyName();
-                $scope.user.photo     = profile.getImageUrl();
-                $scope.user.email     = profile.getEmail();
-                $scope.user.domain    = googleUser.getHostedDomain();
-                $scope.user.timestamp = moment().format();
-                $scope.user.ip        = VIH_HostIP;
-            } else {
-                $scope.user = {};
-                main.html('');
-            }
-        }
+      console.log('appStart()');
+      gapi.load('auth2', initSigninV2);
+    };
+  
+    var initSigninV2 = function() {
+        console.log('initSigninV2()');
+        auth2 = gapi.auth2.getAuthInstance();
+        auth2.isSignedIn.listen(signinChanged);
+        auth2.currentUser.listen(userChanged);
+    };
+  
+    var signinChanged = function(isSignedIn) {
+        console.log('signinChanged() = ' + isSignedIn);
+        if(isSignedIn) {
+            var googleUser = auth2.currentUser.get();
+            var authResponse = googleUser.getAuthResponse();
+            var profile = googleUser.getBasicProfile();
+            $scope.user.fullName    = profile.getName();
+            $scope.user.firstName   = profile.getGivenName();
+            $scope.user.lastName    = profile.getFamilyName();
+            $scope.user.photo       = profile.getImageUrl();
+            $scope.user.email       = profile.getEmail();
+            $scope.user.domain      = googleUser.getHostedDomain();
+            $scope.user.timestamp   = moment().format('x');
+            $scope.user.ip          = VIH_HostIP;
+            $scope.user.idToken     = authResponse.id_token;
+            $scope.user.expiresAt   = authResponse.expires_at;
+            $scope.$digest();
+          
+            $http.post('/signinchanged', $scope.user)
+            .then(function onSuccess(response) {
+                console.log('/signinchanged onsuccess = ' + JSON.stringify(response));
+                if(response.status === 201) {
+                    var joinCourse   = response.data.joinCourse;
+                    var createCourse = response.data.createCourse;
+                    main.html('');
 
-        function signinChanged(signedIn) {
-            console.log('signinChanged = ' + signedIn);
-            if(signedIn) {
-                $http.post('/signinchanged', $scope.user)
-                .then(function onSuccess(response) {
-                    console.log('/signinchanged onsuccess = ' + JSON.stringify(response));
-                    if(response.status === 201) {
-                        var joinCourse   = response.data.joinCourse;
-                        var createCourse = response.data.createCourse;
-                        main.html('');
-                        
-                        var html = '';
-                        if(createCourse) {
-                            html += '<a id="create-course" class="button x1" ng-click="createCourse()">Create Course</a>';
-                        }
-                        if(joinCourse) {
-                            html += '<a id="join-course" class="button x1" ng-click="joinCourse()">Join Course</a>';
-                        }
-                        if(!createCourse && !joinCourse) {
-                            html += 'This app is not yet public.';
-                        }
-                        main.append(html);
-                        $compile(main.contents())($scope);
-                    } else {
-                        $scope.error = 'Unexpected status code = ' + response.status;
+                    var html = '';
+                    if(createCourse) {
+                        html += '<a id="create-course" class="button x1" ng-click="createCourse()">Create Course</a>';
                     }
-                }, function onError(response) {
-                    console.log('/signinchanged onerror = ' + JSON.stringify(response));
+                    if(joinCourse) {
+                        html += '<a id="join-course" class="button x1" ng-click="joinCourse()">Join Course</a>';
+                    }
+                    if(!createCourse && !joinCourse) {
+                        html += 'This app is not yet public.';
+                    }
+                    main.append(html);
+                    $compile(main.contents())($scope);
+                } else {
                     $scope.error = 'Unexpected status code = ' + response.status;
-                });
-            } else {
-                
-            }
+                }
+            }, function onError(response) {
+                console.log('/signinchanged onerror = ' + JSON.stringify(response));
+                $scope.error = 'Unexpected status code = ' + response.status;
+            });
+        } else {
+            $scope.user = {};
+            $scope.$digest();
+            main.html('');
         }
-
-        function initSigninV2() {
-            auth2 = gapi.auth2.getAuthInstance();
-            auth2.isSignedIn.listen(signinChanged);
-            auth2.currentUser.listen(userChanged);
-        }
-
-        gapi.load('auth2', initSigninV2);
+    };
+  
+    var userChanged = function(user) {
+        console.log('userChanged() = ' + JSON.stringify(user));
     };
     
-    $scope.GoogleSignOut = function() {
-        console.log('signing out');
-        $scope.user = {};
-        auth2.signOut();        
+    $scope.signOut = function() {
+        console.log('signOut()');
+        gapi.auth2.getAuthInstance().signOut();
+        console.log('auth2 = ' + auth2);
     };
     
-    $scope.GoogleDisconnect = function() {
-        console.log('disconnecting');
-        $scope.user = {};
-        auth2.disconnect();
+    $scope.disconnect = function() {
+        console.log('disconnect()');
+        gapi.auth2.getAuthInstance().disconnect();
+        console.log('auth2 = ' + auth2);
     };
     
     $scope.createCourse = function() {
