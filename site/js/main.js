@@ -39,7 +39,6 @@ app.controller('tcc', function($scope, $window, $http, $compile) {
             $scope.user.ip          = VIH_HostIP;
             $scope.user.idToken     = authResponse.id_token;
             $scope.user.expiresAt   = authResponse.expires_at;
-            $scope.$digest();
           
             $http.post('/signinchanged', $scope.user)
             .then(function onSuccess(response) {
@@ -70,9 +69,9 @@ app.controller('tcc', function($scope, $window, $http, $compile) {
             });
         } else {
             $scope.user = {};
-            $scope.$digest();
             main.html('');
         }
+        $scope.$digest();
     };
   
     var userChanged = function(user) {
